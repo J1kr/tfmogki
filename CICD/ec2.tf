@@ -15,6 +15,10 @@ resource "aws_instance" "J1-tenv" {
         volume_type           = "gp2"
         volume_size           = 20
         delete_on_termination = true
+
+        tags = {
+        Name                        = "J1-tenv"
+    }
     }
 
     tags = {
