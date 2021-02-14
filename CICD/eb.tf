@@ -1,22 +1,21 @@
-resource "aws_elastic_beanstalk_application" "app" {
-  name        = "app"
-  description = "app"
+resource "aws_elastic_beanstalk_application" "docker-travis" {
+  name        = "docker-travis"
+  description = "docker-travis"
 }
 
-resource "aws_elastic_beanstalk_environment" "app-prod" {
-  name        = "app-prod"
+resource "aws_elastic_beanstalk_environment" "docker-travis-prod" {
+  name        = "docker-travis-prod"
   application = aws_elastic_beanstalk_application.app.name
-  #solution_stack_name = "64bit Amazon Linux 2016.09 v2.3.0 running PHP 7.0"
   solution_stack_name = "64bit Amazon Linux 2018.03 v2.16.4 running Docker 19.03.13-ce"
   setting {
     namespace = "aws:ec2:vpc"
     name      = "VPCId"
-    value     = aws_vpc.main.id
+    value     = aws_vpc.tenv.id
   }
   setting {
     namespace = "aws:ec2:vpc"
     name      = "Subnets"
-    value     = aws_subnet.main-private-1.id
+    value     = aws_subnet.tenv-private-1.id
   }
   setting {
     namespace = "aws:ec2:vpc"
@@ -37,7 +36,7 @@ resource "aws_elastic_beanstalk_environment" "app-prod" {
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "InstanceType"
-    value     = "t2.micro"
+    value     = "t3a.micro"
   }
   setting {
     namespace = "aws:elasticbeanstalk:environment"
@@ -52,7 +51,7 @@ resource "aws_elastic_beanstalk_environment" "app-prod" {
   setting {
     namespace = "aws:ec2:vpc"
     name      = "ELBSubnets"
-    value     = aws_subnet.main-public-1.id
+    value     = aws_subnet.tenv-public-1.id
   }
   setting {
     namespace = "aws:elb:loadbalancer"

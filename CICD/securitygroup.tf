@@ -1,7 +1,7 @@
-resource "aws_security_group" "app-prod" {
-  vpc_id = aws_vpc.main.id
-  name = "application - production"
-  description = "security group for my app"
+resource "aws_security_group" "J1-SG" {
+  vpc_id = aws_vpc.tenv.id
+  name = "J1-SG"
+  description = "security group for my WorkPlace"
   egress {
       from_port = 0
       to_port = 0
@@ -13,15 +13,15 @@ resource "aws_security_group" "app-prod" {
       from_port = 22
       to_port = 22
       protocol = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = ["123.214.11.177/32" , "118.32.24.198/32"]
   } 
 
 
   tags = {
-    Name = "myinstance"
+    Name = "J1-SG"
   }
 }
-resource "aws_security_group" "allow-mariadb" {
+/* resource "aws_security_group" "allow-mariadb" {
   vpc_id = aws_vpc.main.id
   name = "allow-mariadb"
   description = "allow-mariadb"
@@ -41,4 +41,4 @@ resource "aws_security_group" "allow-mariadb" {
   tags = {
     Name = "allow-mariadb"
   }
-}
+} */
