@@ -5,7 +5,7 @@ resource "aws_elastic_beanstalk_application" "docker-travis" {
 
 resource "aws_elastic_beanstalk_environment" "docker-travis-prod" {
   name        = "docker-travis-prod"
-  application = aws_elastic_beanstalk_application.app.name
+  application = aws_elastic_beanstalk_application.docker-travis.name
   solution_stack_name = "64bit Amazon Linux 2018.03 v2.16.4 running Docker 19.03.13-ce"
   setting {
     namespace = "aws:ec2:vpc"
@@ -15,7 +15,7 @@ resource "aws_elastic_beanstalk_environment" "docker-travis-prod" {
   setting {
     namespace = "aws:ec2:vpc"
     name      = "Subnets"
-    value     = aws_subnet.tenv-private-1.id
+    value     = aws_subnet.tenv-public-1.id
   }
   setting {
     namespace = "aws:ec2:vpc"
@@ -30,7 +30,7 @@ resource "aws_elastic_beanstalk_environment" "docker-travis-prod" {
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "SecurityGroups"
-    value     = aws_security_group.app-prod.id
+    value     = aws_security_group.J1-SG.id
   }
 
   setting {
