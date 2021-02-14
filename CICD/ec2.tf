@@ -1,8 +1,8 @@
 resource "aws_instance" "J1-tenv" {
     ami                         = "ami-0ad398ec67ca188ff"
     availability_zone           = "ap-northeast-2a"
-    ebs_optimized               = false
-    instance_type               = "t3a.micro"
+    ebs_optimized               = true
+    instance_type               = "t3a.small"
     monitoring                  = false
     key_name                    = "J1"
     subnet_id                   = aws_subnet.tenv-public-1.id
