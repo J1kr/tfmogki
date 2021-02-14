@@ -21,6 +21,54 @@ resource "aws_security_group" "J1-SG" {
     Name = "J1-SG"
   }
 }
+
+resource "aws_security_group" "Internel-SG" {
+  vpc_id = aws_vpc.tenv.id
+  name = "Internel"
+  description = "security group for VPC"
+  egress {
+      from_port = 0
+      to_port = 0
+      protocol = "-1"
+      cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+      from_port = 0
+      to_port = 0
+      protocol = "-1"
+      cidr_blocks = ["10.0.0.0/16"]
+  } 
+
+
+  tags = {
+    Name = "Internel-SG"
+  }
+}
+
+resource "aws_security_group" "app-prod" {
+  vpc_id = aws_vpc.tenv.id
+  name = "application - production"
+  description = "security group for my app"
+  egress {
+      from_port = 0
+      to_port = 0
+      protocol = "-1"
+      cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+      from_port = 22
+      to_port = 22
+      protocol = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+  } 
+
+
+  tags = {
+    Name = "myinstance"
+  }
+}
 /* resource "aws_security_group" "allow-mariadb" {
   vpc_id = aws_vpc.main.id
   name = "allow-mariadb"
