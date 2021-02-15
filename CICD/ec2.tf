@@ -6,7 +6,7 @@ resource "aws_instance" "J1-tenv" {
     monitoring                  = false
     key_name                    = "J1"
     subnet_id                   = aws_subnet.tenv-public-1.id
-    vpc_security_group_ids      = [aws_security_group.J1-SG.id]
+    vpc_security_group_ids      = [aws_security_group.J1-SG.id, aws_security_group.Internel-SG.id]
     associate_public_ip_address = true
     private_ip                  = "10.0.0.10"
     source_dest_check           = true
