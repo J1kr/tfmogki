@@ -6,7 +6,7 @@ resource "aws_db_subnet_group" "mysql-subnet" {
 
 resource "aws_db_parameter_group" "mysql-parameters" {
     name = "mysql-params"
-    family = "mysql8.0"
+    family = "mysql5.7"
     description = "mysql parameter group"
 
     parameter {
@@ -20,7 +20,7 @@ resource "aws_db_parameter_group" "mysql-parameters" {
 resource "aws_db_instance" "mysql" {
   allocated_storage    = 20    # 20 GB of storage, gives us more IOPS than a lower number
   engine               = "mysql"
-  engine_version       = "8.0.21"
+  engine_version       = "5.7.31"
   instance_class       = "db.t2.small"    # use micro if you want to use the free tier
   identifier           = "docker-fullstack-mysql"
   name                 = "myapp" # database name

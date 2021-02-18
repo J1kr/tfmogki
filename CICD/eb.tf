@@ -99,13 +99,13 @@ resource "aws_elastic_beanstalk_environment" "tdocker-env" {
   }
     setting {
     namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "MYSQL_USERNAME"
+    name      = "MYSQL_USER"
     value     = aws_db_instance.mysql.username
   }
   
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "MYSQL_PASSWORD"
+    name      = "MYSQL_ROOT_PASSWORD"
     value     = aws_db_instance.mysql.password
   }
 
