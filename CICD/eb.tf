@@ -122,6 +122,6 @@ resource "aws_elastic_beanstalk_environment" "tdocker-env" {
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "MYSQL_HOST"
-    value     = aws_db_instance.mysql.endpoint
+    value     = aws_db_instance.mysql.address
   }
 }
