@@ -97,5 +97,31 @@ resource "aws_elastic_beanstalk_environment" "tdocker-env" {
     name      = "RollingUpdateType"
     value     = "Health"
   }
+    setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "MYSQL_USERNAME"
+    value     = aws_db_instance.mysql.username
+  }
   
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "MYSQL_PASSWORD"
+    value     = aws_db_instance.mysql.password
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "MYSQL_DATABASE"
+    value     = aws_db_instance.mysql.name
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "MYSQL_PORT"
+    value     = aws_db_instance.mysql.port
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "MYSQL_HOST"
+    value     = aws_db_instance.mysql.endpoint
+  }
 }
