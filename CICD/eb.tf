@@ -1,11 +1,13 @@
 resource "aws_elastic_beanstalk_application" "tdocker" {
+  count = var.instance_count
   name        = "tdocker"
   description = "tdocker"
 }
 
 resource "aws_elastic_beanstalk_environment" "tdocker-env" {
+  count = var.instance_count
   name        = "tdocker-env"
-  application = aws_elastic_beanstalk_application.tdocker.name
+  application = aws_elastic_beanstalk_application.tdocker[count.index].name
   solution_stack_name = "64bit Amazon Linux 2018.03 v2.25.0 running Multi-container Docker 19.03.13-ce (Generic)"
   wait_for_ready_timeout ="8m"
   
@@ -100,28 +102,28 @@ resource "aws_elastic_beanstalk_environment" "tdocker-env" {
     setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "MYSQL_USER"
-    value     = aws_db_instance.mysql.username
+    value     = aws_db_instance.mysql[count.index].username
   }
   
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "MYSQL_ROOT_PASSWORD"
-    value     = aws_db_instance.mysql.password
+    value     = aws_db_instance.mysql[count.index].password
   }
 
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "MYSQL_DATABASE"
-    value     = aws_db_instance.mysql.name
+    value     = aws_db_instance.mysql[count.index].name
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "MYSQL_PORT"
-    value     = aws_db_instance.mysql.port
+    value     = aws_db_instance.mysql[count.index].port
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "MYSQL_HOST"
-    value     = aws_db_instance.mysql.address
+    value     = aws_db_instance.mysql[count.index].address
   }
 }

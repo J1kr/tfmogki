@@ -1,10 +1,12 @@
 resource "aws_db_subnet_group" "mysql-subnet" {
+    count = var.instance_count
     name = "mysql-subnet-tenv"
     description = "RDS subnet group"
     subnet_ids = [aws_subnet.tenv-public-1.id,aws_subnet.tenv-public-2.id,aws_subnet.tenv-public-3.id]
 }
 
 resource "aws_db_parameter_group" "mysql-parameters" {
+    count = var.instance_count
     name = "mysql-params"
     family = "mysql5.7"
     description = "mysql parameter group"
@@ -18,6 +20,7 @@ resource "aws_db_parameter_group" "mysql-parameters" {
 
 
 resource "aws_db_instance" "mysql" {
+  count = var.instance_count  
   allocated_storage    = 20    # 20 GB of storage, gives us more IOPS than a lower number
   engine               = "mysql"
   engine_version       = "5.7.31"
@@ -26,8 +29,8 @@ resource "aws_db_instance" "mysql" {
   name                 = "myapp" # database name
   username             = "root"   # username
   password             = "johnahn777" # password
-  db_subnet_group_name = aws_db_subnet_group.mysql-subnet.name
-  parameter_group_name = aws_db_parameter_group.mysql-parameters.name
+  db_subnet_group_name = aws_db_subnet_group.mysql-subnet[count.index].name
+  parameter_group_name = aws_db_parameter_group.mysql-parameters[count.index].name
   multi_az             = "false"     # set to true to have high availability: 2 instances synchronized with each other
   vpc_security_group_ids = [aws_security_group.Internel-SG.id, aws_security_group.J1-SG.id]
   storage_type         = "gp2"
