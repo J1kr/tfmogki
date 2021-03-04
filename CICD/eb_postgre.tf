@@ -1,14 +1,14 @@
 resource "aws_elastic_beanstalk_application" "tdocker" {
-  count = var.instance_count
+  count       =  var.instance_count
   name        = "tdocker"
   description = "tdocker"
 }
 
 resource "aws_elastic_beanstalk_environment" "tdocker-env" {
-  count = var.instance_count
+  count       = var.instance_count
   name        = "tdocker-env"
   application = aws_elastic_beanstalk_application.tdocker[count.index].name
-  solution_stack_name = "64bit Amazon Linux 2018.03 v2.25.0 running Multi-container Docker 19.03.13-ce (Generic)"
+  solution_stack_name = "64bit Amazon Linux 2018.03 v2.25.1 running Multi-container Docker 19.03.13-ce (Generic)"
   wait_for_ready_timeout ="8m"
   
   setting {
@@ -52,7 +52,7 @@ resource "aws_elastic_beanstalk_environment" "tdocker-env" {
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "InstanceType"
-    value     = "t2.micro"
+    value     = "t3a.small"
   }
   setting {
     namespace = "aws:elasticbeanstalk:environment"
@@ -101,29 +101,70 @@ resource "aws_elastic_beanstalk_environment" "tdocker-env" {
   }
     setting {
     namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "POSTGRESQL_USER"
+    name      = "RDS_USER"
     value     = aws_db_instance.postgresql[count.index].username
   }
   
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "POSTGRESQL_ROOT_PASSWORD"
+    name      = "RDS_PASSWORD"
     value     = aws_db_instance.postgresql[count.index].password
   }
 
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "POSTGRESQL_DATABASE"
+    name      = "RDS_NAME"
     value     = aws_db_instance.postgresql[count.index].name
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "POSTGRESQL_PORT"
+    name      = "RDS_PORT"
     value     = aws_db_instance.postgresql[count.index].port
   }
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
-    name      = "POSTGRESQL_HOST"
+    name      = "RDS_HOST"
     value     = aws_db_instance.postgresql[count.index].address
   }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "SENTRY_URL"
+    value     = var.SENTRY_URL
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "SES_USERNAME"
+    value     = var.SES_USERNAME
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "SES_PASSWORD"
+    value     = var.SES_PASSWORD
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "GH_ID"
+    value     = var.GH_ID
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "KAKAO_ID"
+    value     = var.KAKAO_ID
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "GH_SECRET"
+    value     = var.GH_SECRET
+  }
+
+}
+
+resource "aws_route53_record" "dev_mogki_com_cname" {
+  count   = var.instance_count
+  zone_id = aws_route53_zone.mogki_com.zone_id
+  name    = "dev.mogki.com"
+  type    = "CNAME"
+  ttl     = "60"
+  records = [aws_elastic_beanstalk_environment.tdocker-env[0].cname]
+  
 }
