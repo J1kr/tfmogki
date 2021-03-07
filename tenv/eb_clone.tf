@@ -52,7 +52,7 @@ resource "aws_elastic_beanstalk_environment" "tdocker-env" {
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "InstanceType"
-    value     = "t3a.small"
+    value     = "t3a.micro"
   }
   setting {
     namespace = "aws:elasticbeanstalk:environment"
