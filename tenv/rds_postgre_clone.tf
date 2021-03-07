@@ -21,7 +21,7 @@ resource "aws_db_instance" "postgresql" {
   identifier           = "django-postgresql"
   name                 = "postgre" # database name
   username             = "postgres"   # username
-  password             = "MMMaaa555!" # password
+  password             = var.RDS_PASSWD # password
   db_subnet_group_name = aws_db_subnet_group.postgresql-subnet[count.index].name
   parameter_group_name = aws_db_parameter_group.postgresql-parameters[count.index].name
   multi_az             = "false"     # set to true to have high availability: 2 instances synchronized with each other

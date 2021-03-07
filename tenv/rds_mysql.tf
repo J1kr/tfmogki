@@ -28,7 +28,7 @@ resource "aws_db_instance" "mysql" {
   identifier           = "docker-fullstack-mysql"
   name                 = "myapp" # database name
   username             = "root"   # username
-  password             = "johnahn777" # password
+  password             = var.RDS_PASSWD # password
   db_subnet_group_name = aws_db_subnet_group.mysql-subnet[count.index].name
   parameter_group_name = aws_db_parameter_group.mysql-parameters[count.index].name
   multi_az             = "false"     # set to true to have high availability: 2 instances synchronized with each other
