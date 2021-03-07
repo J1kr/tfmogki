@@ -18,7 +18,7 @@ resource "aws_route53_record" "mogki_com_a" {
   name    = "mogki.com"
   type    = "A"
   ttl     = "1800"
-  records = ["13.209.105.179"]
+  records = [aws_instance.J1-tenv.public_ip]
 }
 
 resource "aws_route53_record" "mogki_com_ns" {
